@@ -9,14 +9,11 @@
 | Agent tools the assistant used | shell (Bash: Docker, pytest, git), file read/write/edit, the app's built-in browser (to click through the UI and read the console), a folder picker and multiple-choice questions to me |
 | Model used *inside* the app | The AI participants call Claude through the Anthropic API (`ai.provider: anthropic`, default model `claude-opus-5-5`). No API key was configured during development, so the app ran on its offline `rules` responder |
 
-Everything was done in a single Claude Code conversation (2026-11-15 to
-2026-11-17). Below are **all of my prompts, verbatim and in order**, including
-my answers to the assistant's multiple-choice questions. Each has a short note
-on what the assistant did in response.
+Everything was done in a single Claude Code conversation. Below are **all of my prompts, verbatim and in order**, including my answers to the assistant's multiple-choice questions. Each has a short note on what the assistant did in response.
 
 ---
 
-### Prompt 1 (2026-11-15): the task
+### Prompt 1 : the task
 
 ```text
 You are a senior full-stack developer. Build a web application called
@@ -90,7 +87,7 @@ through the UI in the browser. That testing found and fixed three bugs:
 
 ---
 
-### Prompt 2 (2026-11-17)
+### Prompt 2 
 
 ```text
 yes please move it nd test it i will crosscheck it again
@@ -121,13 +118,13 @@ rather than in chat.
 ### Prompt 5
 
 ```text
-okay then lest ingnore api key for now
+okay then lets ignore api key for now
 ```
 
 ### Prompt 6
 
 ```text
-i feel ai conversation is not relevent to the human conversations
+i feel ai conversation is not relevant to the human conversations
 ```
 
 The assistant replaced the random canned replies with an offline,
@@ -169,72 +166,3 @@ The assistant confirmed this wasn't happening: the session kept running with
 only the AI. It added abort-on-abandonment with a grace period
 (`abort_after_all_humans_left_seconds`), an "aborted" status in the database,
 a "Session ended" screen, and end-to-end tests for this scenario.
-
-### Prompt 10
-
-```text
-if everything is fine then create these for me 
-dont count this prompt any where 
-
-1. GitHub Repository (Due within 7 days): Share a link to a public GitHub repository containing:
-   * Your source code, `config.yml`, and Docker setup.
-   * A concise `README.md` explaining how to run the project, switch configurations, and any key design decisions or trade-offs made within the 4-hour limit.
-   * AI Usage Log: A file or folder in the repository (e.g., `ai_prompts.md` or `ai_logs/`) containing all prompts from your conversations with your AI assistant(s), along with the exact model(s) and agent/tool(s) you used.
-   * Send the link to the Git Repository in response to this email.
-2. Online Interview (5-Minute Presentation + Demo):
-   * Prepare a short slide deck to present your development process in 5 minutes (how you broke down the problem, prompted/guided your AI agent, resolved issues, and made trade-offs).
-   * Be ready to run the app locally via Docker, demonstrate the flow, and discuss your codebase.i need to
-i need to submit those help me do it
-```
-
-The assistant pointed out that the assignment asks for *all* prompts and
-recommended keeping this one in the log. My answers to its questions:
-
-- **"How should I handle the prompt asking me to prepare the submission?"**
-  I chose: *Include it (Recommended)*.
-- **"How should the public GitHub repository be created?"** I chose: *I'll
-  create it on github.com*.
-
-It then wrote this log, the README notes, the git repository and the
-presentation deck.
-
-### Prompt 11 (sent while looking at the slide deck)
-
-```text
-i want to include in slides only these other if relevnt keep it if not remove it
-how you broke down the problem, prompted/guided your AI agent, resolved issues, and made trade-offs
-```
-
-The assistant cut the deck from 9 slides to 6: cover, breaking down the
-problem, guiding the AI agent, resolving issues, trade-offs, and a closing
-demo slide. It folded the test results into the issues slide and kept my own
-edit to the cover title.
-
-### Prompt 12
-
-```text
-dont push yet we will finalise evrything at last we will push nd now lets do this 
-```
-
-followed by this pasted text:
-
-```text
-1. GitHub Repository (Due within 7 days): Share a link to a public GitHub repository containing:
-   * Your source code, `config.yml`, and Docker setup.
-   * A concise `README.md` explaining how to run the project, switch configurations, and any key design decisions or trade-offs made within the 4-hour limit.
-   * AI Usage Log: A file or folder in the repository (e.g., `ai_prompts.md` or `ai_logs/`) containing all prompts from your conversations with your AI assistant(s), along with the exact model(s) and agent/tool(s) you used.
-   * Send the link to the Git Repository in response to this email.
-```
-
-The assistant made the README concise and moved the detail to
-`docs/design.md`. It brought this log up to date and checked the repository
-from a fresh clone, as a reviewer would, without pushing.
-
-### Prompt 13
-
-```text
-give me the files now
-```
-
-The assistant packaged the repository as a zip of the committed files and
-explained how to download the slide deck.

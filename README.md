@@ -115,7 +115,10 @@ The file comments every option. The full reference is in
     to volunteers, nominations, questions and "are you a bot?", and votes the
     way it argued.
 
-## Trade-offs and limitations
+## Trade-offs within the 4-hour limit
+
+With a 4-hour budget, I put a complete, correct and anonymous flow and
+thorough testing ahead of scale and polish:
 
 - **Live session state is in memory** in one backend process. That keeps it
   simple and fast, but a backend restart ends sessions in progress (stored data
@@ -130,6 +133,11 @@ The file comments every option. The full reference is in
   token.
 - **Rounds other than 2:** the last round decides, and a tie is broken by
   summing all rounds.
+
+**With more time:** run the Claude agents live and tune their prompts, move
+live session state to Redis so the backend can restart or scale, add a
+researcher dashboard and CSV export, and add participant consent and
+identification screens.
 
 ## Tests
 
