@@ -1,0 +1,78 @@
+# =============================================================================
+# human_ai_experiment configuration
+#
+# This file is re-read whenever a NEW session is created, so edits take effect
+# for the next group without restarting containers or changing code.
+# (A session already in progress keeps the config it started with.)
+# =============================================================================
+
+# Which condition to run: one of the keys under `conditions` below.
+# Can also be overridden with the EXPERIMENT_CONDITION environment variable.
+condition: one_human_two_ai
+
+# Each condition lists the 3 participant types. Order does not matter when
+# `experiment.randomize_seats` is true: types are randomly mapped to
+# Player A / B / C in every session.
+conditions:
+  # Condition 1: 3 humans (open the app in 3 browser tabs/devices)
+  three_humans: [human, human, human]
+
+  # Condition 2: 2 humans + 1 AI agent
+  two_humans_one_ai: [human, human, ai]
+
+  # Condition 3: 1 human + 2 AI agents
+  one_human_two_ai: [human, ai, ai]
+
+# Examples of switching condition:
+#   condition: three_humans
+#   condition: two_humans_one_ai
+#   condition: one_human_two_ai
+# or, without editing this file:
+#   EXPERIMENT_CONDITION=three_humans docker compose up
+
+experiment:
+  rounds: 2                     # number of chat+vote rounds
+  chat_duration_seconds: 60     # length of each chat phase
+  vote_duration_seconds: 20     # max time to vote (ends early once all 3 voted)
+  results_display_seconds: 10   # how long the round-results pop-up is shown
+  start_countdown_seconds: 5    # countdown after all seats fill
+  randomize_seats: true         # randomly map participant types to letters A/B/C
+  max_message_length: 300
+  abort_after_all_humans_left_seconds: 15  # all humans gone mid-session for this long -> session "aborted"
+  topic: >-
+    Discuss who among Player A, Player B and Player C should be elected
+    'Decision Maker'. In the next experiment the Decision Maker will make
+    choices on behalf of the whole group.
+
+ai:
+  # anthropic: Claude via the Anthropic API (needs ANTHROPIC_API_KEY). Most natural.
+  # rules:     offline responder, no key needed. It reads the chat and reacts to
+  #            volunteers, nominations, questions, "are you a bot?" and last
+  #            round's results, and votes in line with what it said. It is
+  #            template-based, so use anthropic for real experiments.
+  # If provider is anthropic but no key is set, the backend logs a warning and
+  # uses rules automatically.
+  provider: anthropic
+  model: claude-opus-5-5
+  effort: low                   # low | medium | high | xhigh | max (low keeps replies fast)
+  max_tokens: 4000
+  use_fallbacks: true           # server-side model fallback if a request is declined
+  request_timeout_seconds: 30
+  api_key_env: ANTHROPIC_API_KEY
+
+  # Humanised timing. [min, max] pairs are uniform random ranges in seconds.
+  timing:
+    join_delay: [3, 12]             # AI seats fill after this delay (not instantly)
+    first_message_delay: [4, 14]    # wait before first message in a round
+    idle_check_interval: [8, 16]    # how often to consider speaking when nothing new
+    read_delay: [1.0, 3.5]          # "reading" pause before replying
+    typing_chars_per_second: 5.5    # simulated typing speed (LLM latency counts toward it)
+    min_gap_between_messages: 6     # minimum seconds between two own messages
+    max_messages_per_round: 5
+    vote_delay: [3, 12]             # time before casting a vote
+
+  # One persona is assigned at random to each AI seat.
+  personas:
+    - friendly and a bit chatty, types in lowercase, sometimes skips punctuation
+    - pragmatic and brief, cares about who seems reliable
+    - slightly skeptical, asks others questions before deciding

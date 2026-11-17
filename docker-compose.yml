@@ -1,0 +1,41 @@
+services:
+  mongo:
+    build: ./database
+    environment:
+      MONGO_INITDB_DATABASE: human_ai_experiment
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  backend:
+    build: ./backend
+    environment:
+      MONGO_URI: mongodb://mongo:27017
+      MONGO_DB: human_ai_experiment
+      CONFIG_PATH: /experiment/config.yml
+      # Read from your shell or a .env file next to this compose file.
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      EXPERIMENT_CONDITION: ${EXPERIMENT_CONDITION:-}
+      ADMIN_TOKEN: ${ADMIN_TOKEN:-}
+    volumes:
+      # The project folder is mounted (not just the file) so that editors which
+      # save by replacing the file don't break the mount. Edit config.yml and
+      # the NEXT session picks it up, no restart needed.
+      - ./:/experiment:ro
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "${PORT:-3000}:80"
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:

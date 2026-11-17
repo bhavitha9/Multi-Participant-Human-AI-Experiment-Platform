@@ -1,0 +1,98 @@
+:root {
+  --bg: #f4f5f7;
+  --card: #ffffff;
+  --text: #1d2330;
+  --muted: #667085;
+  --line: #e3e6ec;
+  --accent: #3b5bdb;
+  --accent-soft: #e7ecff;
+  --warn: #c92a2a;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); }
+button {
+  font: inherit; cursor: pointer; border: 0; border-radius: 8px;
+  padding: 10px 18px; background: var(--accent); color: #fff;
+}
+button:disabled { opacity: 0.45; cursor: default; }
+.app { max-width: 1100px; margin: 0 auto; padding: 24px 16px; min-height: 100vh; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+.center { text-align: center; }
+.muted { color: var(--muted); }
+.small { font-size: 0.9rem; }
+.big { font-size: 1.4rem; font-weight: 600; }
+.banner {
+  position: fixed; top: 0; left: 0; right: 0; background: #fff3bf;
+  text-align: center; padding: 6px; font-size: 0.9rem; z-index: 20;
+}
+
+/* waiting room */
+.seats { display: flex; gap: 16px; justify-content: center; margin: 28px 0; flex-wrap: wrap; }
+.seat {
+  width: 150px; padding: 18px 10px; border-radius: 12px; border: 2px dashed var(--line);
+  transition: all 0.3s ease;
+}
+.seat.filled { border-style: solid; border-color: var(--accent); background: var(--accent-soft); }
+.seat.you { box-shadow: 0 0 0 3px #bac8ff; }
+.avatar {
+  width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 10px; background: var(--line);
+  display: grid; place-items: center; font-weight: 700; font-size: 1.3rem; color: #fff;
+}
+.seat.filled .avatar { background: var(--accent); }
+.seat-name { font-weight: 600; }
+.seat-status { color: var(--muted); font-size: 0.9rem; }
+
+/* discussion */
+.layout { display: grid; grid-template-columns: 240px 1fr; gap: 16px; }
+.side h3 { margin: 0 0 8px; font-size: 1rem; }
+.side h3:not(:first-child) { margin-top: 20px; }
+.people { list-style: none; padding: 0; margin: 0; }
+.people li { padding: 4px 0; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #37b24d; margin-right: 6px; }
+.main { display: flex; flex-direction: column; height: calc(100vh - 48px); padding: 0; }
+.topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 20px; border-bottom: 1px solid var(--line);
+}
+.timer { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 1.2rem; }
+.timer.low { color: var(--warn); }
+.chat-log { flex: 1; overflow-y: auto; padding: 16px 20px; }
+.divider { text-align: center; color: var(--muted); font-size: 0.8rem; margin: 10px 0; }
+.msg { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 10px; }
+.msg.mine { align-items: flex-end; }
+.sender { font-size: 0.75rem; color: var(--muted); margin-bottom: 2px; }
+.bubble {
+  background: #f1f3f5; padding: 8px 12px; border-radius: 12px; max-width: 75%;
+  white-space: pre-wrap; word-break: break-word;
+}
+.msg.mine .bubble { background: var(--accent); color: #fff; }
+.composer { display: flex; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--line); }
+.composer input {
+  flex: 1; font: inherit; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px;
+}
+.vote-panel { padding: 16px 20px; border-top: 1px solid var(--line); text-align: center; }
+.vote-panel h2 { font-size: 1.1rem; margin-top: 0; }
+.vote-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* modal + results */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(20, 24, 33, 0.45);
+  display: grid; place-items: center; z-index: 10; padding: 16px;
+}
+.modal { background: var(--card); border-radius: 14px; padding: 28px; width: min(460px, 100%); text-align: center; }
+.modal h2 { margin-top: 0; }
+.tally { margin: 18px 0; text-align: left; }
+.tally-row { display: grid; grid-template-columns: 80px 1fr 70px; gap: 10px; align-items: center; margin: 8px 0; }
+.tally-row.winner .tally-name { font-weight: 700; }
+.bar { height: 12px; background: var(--line); border-radius: 6px; overflow: hidden; }
+.bar span { display: block; height: 100%; background: var(--accent); transition: width 0.6s ease; }
+.tally-count { color: var(--muted); font-size: 0.9rem; text-align: right; }
+.elected { font-size: 1.2rem; margin: 14px 0 6px; }
+
+@media (max-width: 720px) {
+  .layout { grid-template-columns: 1fr; }
+  .side { display: none; }
+  .main { height: calc(100vh - 48px); }
+}
