@@ -229,3 +229,12 @@ followed by this pasted text:
 The assistant made the README concise and moved the detail to
 `docs/design.md`. It brought this log up to date and checked the repository
 from a fresh clone, as a reviewer would, without pushing.
+
+### Prompt 13
+
+```text
+give me the files now
+```
+
+The assistant packaged the repository as a zip of the committed files and
+explained how to download the slide deck.
